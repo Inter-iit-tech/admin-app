@@ -41,17 +41,17 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "flex-start",
     flexDirection: "row",
-    minHeight: 140,
+    minHeight: 130,
   },
   image: {
     height: "100%",
-    width: 120,
+    width: "30%",
     borderRadius: 20,
   },
   content: {
     flexGrow: 1,
     height: "100%",
-    paddingHorizontal: 20,
+    paddingLeft: 20,
     display: "flex",
     flexDirection: "column",
   },
@@ -62,8 +62,9 @@ const styles = StyleSheet.create({
   },
   status: {
     marginTop: "auto",
-    width: 100,
+    width: "auto",
     paddingVertical: 4,
+    paddingHorizontal: 8,
     backgroundColor: "#87CEEB",
     borderRadius: 20,
     textAlign: "center",
@@ -85,7 +86,7 @@ const styles = StyleSheet.create({
   },
   statusContainer: { alignItems: "flex-end" },
   text: {
-    fontSize: 12,
+    fontSize: 10,
   },
 });
 export default HorizontalCard;
