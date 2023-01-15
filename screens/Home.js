@@ -3,7 +3,11 @@ import { StyleSheet, Text, View } from "react-native";
 const Home = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Text>Home</Text>
+      {/* <ScrollView style={styles.orders}>
+        {orders.map((order, index) => (
+          <HorizontalCard order={order} key={index} />
+        ))}
+      </ScrollView> */}
     </View>
   );
 };
