@@ -8,7 +8,7 @@ const orders = [
   {
     image: food,
     customer: "David",
-    address: "Hyderabad, TelanganaHyderabad, Telangana Hyderabad, Telangana",
+    address: "Hyderabad, TelanganaHyderabad, Tela ngana Hyderabad, Telangana",
     date: "18 june, 2023",
     status: "Delivered",
   },

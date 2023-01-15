@@ -1,7 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Home, Orders, Riders } from "./../screens";
+import { Home, Orders, Riders, Pickups, AddPickup } from "./../screens";
 import { Icon } from "@rneui/themed";
 import { StyleSheet } from "react-native";
 
@@ -18,6 +18,31 @@ export default function Navigator() {
 
   const riderrBarOptions = {
     tabBarIcon: () => <Icon name="people" type="material" />,
+  };
+
+  const pickupBarOptions = {
+    tabBarIcon: () => <Icon name="shopping-bag" type="material" />,
+    headerShown: false,
+  };
+
+  // Stacks
+
+  const pickupStack = createNativeStackNavigator();
+  const PickupStackNavigator = () => {
+    return (
+      <pickupStack.Navigator>
+        <pickupStack.Screen
+          name="pickups"
+          component={Pickups}
+          options={{ title: "Pickups" }}
+        />
+        <pickupStack.Screen
+          name="add-pickup"
+          component={AddPickup}
+          options={{ title: "Add pickup" }}
+        />
+      </pickupStack.Navigator>
+    );
   };
 
   return (
@@ -38,6 +63,11 @@ export default function Navigator() {
             name="Riders"
             component={Riders}
             options={riderrBarOptions}
+          />
+          <TabNavigator.Screen
+            name="Pickups"
+            component={PickupStackNavigator}
+            options={pickupBarOptions}
           />
         </TabNavigator.Group>
       </TabNavigator.Navigator>
