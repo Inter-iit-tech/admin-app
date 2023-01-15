@@ -87,6 +87,8 @@ const styles = StyleSheet.create({
   statusContainer: { alignItems: "flex-end" },
   text: {
     fontSize: 10,
+    flex: 1,
+    flexWrap: "wrap",
   },
 });
 export default HorizontalCard;
