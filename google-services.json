@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "147407323116",
+    "project_id": "tech-iit",
+    "storage_bucket": "tech-iit.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:147407323116:android:45d2dce122b2fb22800ac9",
+        "android_client_info": {
+          "package_name": "com.kartikeya123.techiit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "147407323116-9iript7slm7piofoios9p427l273pb2d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kartikeya123.techiit",
+            "certificate_hash": "59b691ba7eefe4083fe18849b2c07a696eda2b17"
+          }
+        },
+        {
+          "client_id": "147407323116-cl23j3lc6lat0eufs7hma35qmo2gk50c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kartikeya123.techiit",
+            "certificate_hash": "cb0fbae7d8c2f192f8b37132b7f1e41b75368813"
+          }
+        },
+        {
+          "client_id": "147407323116-e2osksbgilke0stlthvh3b1c6nepqmvd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQlDJQYwNfJ5AjHJYrrmObl9wBW1g0ZMw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "147407323116-e2osksbgilke0stlthvh3b1c6nepqmvd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
