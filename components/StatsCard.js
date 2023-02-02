@@ -63,8 +63,9 @@ const StatsCard = () => {
     <Card containerStyle={styles.card}>
       <Card.Title>Today's Statistics</Card.Title>
       <Card.Divider />
-      {stats.map((stat) => (
+      {stats.map((stat, ind) => (
         <ListItem.Accordion
+          key={ind}
           content={
             <>
               {stat.icon}
@@ -78,8 +79,8 @@ const StatsCard = () => {
             stat.setExpanded((state) => !state);
           }}
         >
-          {stat.properties.map((property) => (
-            <ListItem>
+          {stat.properties.map((property, ind) => (
+            <ListItem key={ind}>
               <ListItem.Content style={styles.itemContent}>
                 <Text>{property.name}</Text>
                 <Text>{property.value}</Text>

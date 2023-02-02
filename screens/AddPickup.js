@@ -10,6 +10,7 @@ import {
 import Input from "../components/Input";
 import COLORS from "../assets/colors/colors";
 import { Button } from "@rneui/themed";
+import axios from "./../utils/axios/request";
 
 export default function AddPickup({ navigation }) {
   const [inputs, setInputs] = useState({
@@ -58,8 +59,16 @@ export default function AddPickup({ navigation }) {
     // POST request
     console.log(inputs);
 
+    axios
+      .post("/api/v1/admin/add-pickup", inputs)
+      .then((res) => {
+        console.log(res);
+        navigation.goBack();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     // Go back to screen
-    navigation.goBack();
   };
   return (
     <SafeAreaView style={styles.container}>

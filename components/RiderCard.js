@@ -13,10 +13,11 @@ const RiderCard = ({ rider }) => {
         <>
           <Avatar
             rounded
-            source={{
-              uri: "https://randomuser.me/api/portraits/men/36.jpg",
-            }}
+            title={rider?.name[0] || "HW"}
+            titleStyle={{ color: "white", fontWeight: "600" }}
+            containerStyle={{ backgroundColor: "#FF7F50" }}
           />
+
           <ListItem.Content style={styles.title}>
             <Text>{rider.name}</Text>
             <Text>{rider.id}</Text>
