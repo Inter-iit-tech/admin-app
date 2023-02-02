@@ -1,39 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
 import { SearchBar } from "@rneui/themed";
 import food from "./../assets/images/food.png";
 import HorizontalCard from "../components/horizontalCard";
+import { FAB } from "@rneui/base";
+import { FlatList } from "react-native";
+import Order from "../components/Order";
+import axios from "./../utils/axios/request";
+// import orders from "./../samples/orders";
 
-const orders = [
-  {
-    image: food,
-    customer: "David",
-    address: "Hyderabad, TelanganaHyderabad, Tela ngana Hyderabad, Telangana",
-    date: "18 june, 2023",
-    status: "Delivered",
-  },
-  {
-    image: food,
-    customer: "Tim",
-    address: "Hyderabad, Telangana",
-    date: "18 june, 2023",
-    status: "Delivered",
-  },
-  {
-    image: food,
-    customer: "Johns",
-    address: "Hyderabad, Telangana",
-    date: "18 june, 2023",
-    status: "Delivered",
-  },
-  {
-    image: food,
-    customer: "David",
-    address: "Hyderabad, Telangana",
-    date: "18 june, 2023",
-    status: "Delivered",
-  },
-];
 export default function Orders() {
   const [search, setSearch] = useState("");
 
@@ -41,6 +16,22 @@ export default function Orders() {
     console.log(search);
     setSearch(search);
   };
+  const [orders, setOrders] = useState([]);
+
+  const getAdminDetails = () => {
+    axios
+      .get("/api/v1/admin/details-db/orders")
+      .then((response) => {
+        if (response?.data?.data) setOrders(response.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    getAdminDetails();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -54,11 +45,28 @@ export default function Orders() {
           inputContainerStyle={styles.inputContainer}
         />
       </View>
-      <ScrollView style={styles.orders}>
+      {/* <ScrollView style={styles.orders}>
         {orders.map((order, index) => (
           <HorizontalCard order={order} key={index} />
         ))}
-      </ScrollView>
+      </ScrollView> */}
+      <FlatList
+        style={styles.list}
+        data={orders}
+        renderItem={({ index, item }) => {
+          return (
+            <Order
+              name={item.names}
+              address={item.address}
+              awb={item.AWB}
+              productID={item.product_id}
+            />
+          );
+        }}
+        keyExtractor={(order) => order.AWB}
+        ListFooterComponent={View}
+        ListFooterComponentStyle={styles.footerPadView}
+      />
     </View>
   );
 }
@@ -90,5 +98,9 @@ const styles = StyleSheet.create({
     height: "100%",
     padding: 20,
     marginBottom: 10,
+  },
+  list: {
+    marginTop: 10,
+    paddingHorizontal: 10,
   },
 });
