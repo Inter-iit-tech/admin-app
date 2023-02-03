@@ -69,7 +69,7 @@ const Pickups = ({ navigation }) => {
         <FAB
           icon={{ name: "add", color: "white" }}
           style={styles.floatingButton}
-          color="#37deed"
+          color="skyblue"
           onPress={openAddPickup}
         />
       </View>
