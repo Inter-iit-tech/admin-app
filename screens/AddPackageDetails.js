@@ -96,9 +96,6 @@ const AddPackageDetails = ({ navigation }) => {
       console.log(err.message);
     }
   };
-  useEffect(() => {
-    console.log("[Item Screen]: ", image);
-  }, [image]);
 
   return (
     <SafeAreaView style={styles.container}>

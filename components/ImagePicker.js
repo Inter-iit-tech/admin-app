@@ -25,11 +25,9 @@ const ImagePicker = ({ onImageSelect, imageURI }) => {
       return;
     }
 
-    console.log(result.assets);
-    onImageSelect(result.assets?.[0]);
+    onImageSelect(result.assets[0]);
   };
 
-  console.log("[ImagePicker] uri: " + imageURI);
   return (
     <View style={styles.rootContainer}>
       <View
@@ -79,12 +77,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 10,
     borderRadius: 6,
-    // overflow: "hidden",
+    overflow: "hidden",
   },
   image: {
+    width: "100%",
     aspectRatio: 1,
-    borderColor: "red",
-    borderWidth: 1,
   },
   displayText: {
     color: "white",
