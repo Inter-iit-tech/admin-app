@@ -58,11 +58,18 @@ export default function AddPickup({ navigation }) {
   const submitDetails = () => {
     // POST request
     console.log(inputs);
+    const requestBody = {
+      order: {
+        names: inputs.name,
+        address: inputs.address,
+        product: inputs.productId,
+      },
+    };
 
     axios
-      .post("/api/v1/admin/add-pickup", inputs)
+      .post("/api/v1/admin/add-pickup", requestBody)
       .then((res) => {
-        console.log(res);
+        console.log(res.data);
         navigation.goBack();
       })
       .catch((err) => {
