@@ -1,13 +1,9 @@
 import { useState, useEffect } from "react";
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { SearchBar } from "@rneui/themed";
-import food from "./../assets/images/food.png";
-import HorizontalCard from "../components/horizontalCard";
-import { FAB } from "@rneui/base";
 import { FlatList } from "react-native";
 import Order from "../components/Order";
 import axios from "./../utils/axios/request";
-// import orders from "./../samples/orders";
 
 export default function Orders() {
   const [search, setSearch] = useState("");
@@ -45,11 +41,6 @@ export default function Orders() {
           inputContainerStyle={styles.inputContainer}
         />
       </View>
-      {/* <ScrollView style={styles.orders}>
-        {orders.map((order, index) => (
-          <HorizontalCard order={order} key={index} />
-        ))}
-      </ScrollView> */}
       <FlatList
         style={styles.list}
         data={orders}

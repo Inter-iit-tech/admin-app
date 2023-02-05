@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { SearchBar } from "@rneui/themed";
 import { FAB } from "@rneui/base";
 import { FlatList } from "react-native";
