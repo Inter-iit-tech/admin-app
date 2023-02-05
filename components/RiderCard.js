@@ -19,8 +19,8 @@ const RiderCard = ({ rider }) => {
           />
 
           <ListItem.Content style={styles.title}>
-            <Text>{rider.name}</Text>
-            <Text>{rider.id}</Text>
+            <Text style={{ fontWeight: "bold" }}>{rider.name}</Text>
+            <Text>{rider.phoneNumber}</Text>
           </ListItem.Content>
         </>
       }

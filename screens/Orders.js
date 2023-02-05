@@ -59,7 +59,7 @@ export default function Orders() {
               name={item.names}
               address={item.address}
               awb={item.AWB}
-              productID={item.product_id}
+              productID={item.product}
             />
           );
         }}
