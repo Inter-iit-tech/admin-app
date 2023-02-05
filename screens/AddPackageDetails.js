@@ -7,13 +7,13 @@ import {
   ScrollView,
   Keyboard,
   Platform,
-  ActivityIndicator,
   Alert,
 } from "react-native";
-import { Icon, Overlay, Button } from "@rneui/base";
+import { Icon, Button } from "@rneui/base";
 import axios from "axios";
 import Input from "../components/Input";
 import ImagePicker from "../components/ImagePicker";
+import useLoadingIndicator from "../hooks/useLoadingIndicator";
 import COLORS from "../assets/colors/colors";
 
 const AddPackageDetails = ({ navigation }) => {
@@ -28,9 +28,9 @@ const AddPackageDetails = ({ navigation }) => {
     { label: "Area (cm sq.)", key: "area", value: "" },
   ]);
   const [image, setImage] = useState(null);
-  const [volumeLoading, setVolumeLoading] = useState(false);
   const [volumeFetched, setVolumeFetched] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [loading, showLoading, hideLoading] = useLoadingIndicator();
 
   const handleChange = (text, index) => {
     setManualInputs((prevState) => {
@@ -80,7 +80,7 @@ const AddPackageDetails = ({ navigation }) => {
   };
 
   const uploadImage = async (imageData = image) => {
-    setVolumeLoading(true);
+    showLoading();
     setVolumeFetched(false);
 
     const fileContents = imageData.base64;
@@ -107,7 +107,7 @@ const AddPackageDetails = ({ navigation }) => {
       }
       Alert.alert("Error", displayMessage);
     }
-    setVolumeLoading(false);
+    hideLoading();
   };
 
   const submitDetails = async () => {
@@ -153,9 +153,6 @@ const AddPackageDetails = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scroller}>
-        <Overlay isVisible={volumeLoading} overlayStyle={styles.overlay}>
-          <ActivityIndicator color="white" />
-        </Overlay>
         <Text style={styles.subheading}>Enter new item details</Text>
         <View style={styles.content}>
           {manualInputs.map((input, index) => (
@@ -217,7 +214,7 @@ const AddPackageDetails = ({ navigation }) => {
         />
         {image && (
           <Button
-            disabled={volumeLoading || isSubmitting}
+            disabled={loading || isSubmitting}
             buttonStyle={{
               marginTop: 20,
               padding: 10,
@@ -252,11 +249,5 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-  },
-  overlay: {
-    backgroundColor: "transparent",
-    flex: 1,
-    width: "100%",
-    justifyContent: "center",
   },
 });
