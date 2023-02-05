@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { StyleSheet, View, ScrollView } from "react-native";
 import RiderCard from "../components/RiderCard";
 import axios from "./../utils/axios/request";
 import { SearchBar } from "@rneui/themed";

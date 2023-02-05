@@ -5,26 +5,29 @@ import * as DocumentPicker from "expo-document-picker";
 
 const DocPicker = () => {
   const [doc, setDoc] = useState();
+
   const pickDocument = async () => {
-    let result = await DocumentPicker.getDocumentAsync({
-      type: "*/*",
-      copyToCacheDirectory: true,
-    }).then((response) => {
+    try {
+      const response = await DocumentPicker.getDocumentAsync({
+        type: "*/*",
+        copyToCacheDirectory: true,
+      });
       if (response.type == "success") {
-        let { name, size, uri } = response;
-        let nameParts = name.split(".");
-        let fileType = nameParts[nameParts.length - 1];
-        var fileToUpload = {
-          name: name,
-          size: size,
-          uri: uri,
+        const { name, size, uri } = response;
+        const nameParts = name.split(".");
+        const fileType = nameParts[nameParts.length - 1];
+        const fileToUpload = {
+          name,
+          size,
+          uri,
           type: "application/" + fileType,
         };
         console.log(fileToUpload, "...............file");
         setDoc(fileToUpload);
       }
-    });
-    // console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
     console.log("Doc: " + doc.uri);
   };
 

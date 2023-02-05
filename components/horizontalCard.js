@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
+import { StyleSheet, Text, View, Image } from "react-native";
 import food from "./../assets/images/food.png";
 import { Icon } from "@rneui/themed";
 

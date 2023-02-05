@@ -1,6 +1,6 @@
 import { Icon, ListItem } from "@rneui/base";
 import { useState } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 const Order = ({ name, address, awb, productID, highlighted }) => {
   const [expanded, setExpanded] = useState(false);

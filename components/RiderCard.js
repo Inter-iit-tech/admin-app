@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 import { useState } from "react";
-import { ListItem, Avatar, Divider } from "@rneui/themed";
+import { ListItem, Avatar } from "@rneui/themed";
 
 const RiderCard = ({ rider }) => {
   const [expanded, setExpanded] = useState(false);
@@ -13,7 +13,7 @@ const RiderCard = ({ rider }) => {
         <>
           <Avatar
             rounded
-            title={rider?.name[0] || "HW"}
+            title={rider?.name?.[0] || "HW"}
             titleStyle={{ color: "white", fontWeight: "600" }}
             containerStyle={{ backgroundColor: "#FF7F50" }}
           />

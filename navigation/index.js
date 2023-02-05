@@ -1,11 +1,16 @@
-import { useEffect, useState } from "react";
+import { Icon } from "@rneui/themed";
+import { StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Home, Orders, Riders, Pickups, AddPickup } from "./../screens";
-import { Icon } from "@rneui/themed";
-import { StyleSheet } from "react-native";
-import axios from "./../utils/axios/request";
+import {
+  Home,
+  Orders,
+  Riders,
+  Pickups,
+  AddPickup,
+  AddPackageDetails,
+} from "./../screens";
 
 const TabNavigator = createBottomTabNavigator();
 
@@ -27,6 +32,11 @@ export default function Navigator() {
     headerShown: false,
   };
 
+  const itemBarOptions = {
+    tabBarIcon: () => <Icon name="playlist-add" type="material" size={30} />,
+    headerTitle: "Add Item",
+  };
+
   // Stacks
 
   const pickupStack = createNativeStackNavigator();
@@ -41,7 +51,7 @@ export default function Navigator() {
         <pickupStack.Screen
           name="add-pickup"
           component={AddPickup}
-          options={{ title: "Add pickup" }}
+          options={{ headerTitle: "Add pickup" }}
         />
       </pickupStack.Navigator>
     );
@@ -50,28 +60,31 @@ export default function Navigator() {
   return (
     <NavigationContainer>
       <TabNavigator.Navigator screenOptions={styles}>
-        <TabNavigator.Group>
-          <TabNavigator.Screen
-            name="Home"
-            component={Home}
-            options={homeBarOptions}
-          />
-          <TabNavigator.Screen
-            name="Orders"
-            component={Orders}
-            options={orderBarOptions}
-          />
-          <TabNavigator.Screen
-            name="Riders"
-            component={Riders}
-            options={riderrBarOptions}
-          />
-          <TabNavigator.Screen
-            name="Pickups"
-            component={PickupStackNavigator}
-            options={pickupBarOptions}
-          />
-        </TabNavigator.Group>
+        <TabNavigator.Screen
+          name="Home"
+          component={Home}
+          options={homeBarOptions}
+        />
+        <TabNavigator.Screen
+          name="Orders"
+          component={Orders}
+          options={orderBarOptions}
+        />
+        <TabNavigator.Screen
+          name="Riders"
+          component={Riders}
+          options={riderrBarOptions}
+        />
+        <TabNavigator.Screen
+          name="Pickups"
+          component={PickupStackNavigator}
+          options={pickupBarOptions}
+        />
+        <TabNavigator.Screen
+          name="Items"
+          component={AddPackageDetails}
+          options={itemBarOptions}
+        />
       </TabNavigator.Navigator>
     </NavigationContainer>
   );

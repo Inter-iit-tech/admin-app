@@ -4,4 +4,13 @@ import Riders from "./Riders";
 import Pickups from "./Pickups";
 import AddPickup from "./AddPickup";
 import DocPicker from "./AddInput";
-export { Home, Orders, Riders, Pickups, AddPickup, DocPicker };
+import AddPackageDetails from "./AddPackageDetails";
+export {
+  Home,
+  Orders,
+  Riders,
+  Pickups,
+  AddPickup,
+  AddPackageDetails,
+  DocPicker,
+};

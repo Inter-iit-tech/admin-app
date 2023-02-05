@@ -1,5 +1,10 @@
+import { LoadingContextProvider } from "./contexts/LoadingContext";
 import StackNavigator from "./navigation";
 
 export default function App() {
-  return <StackNavigator />;
+  return (
+    <LoadingContextProvider>
+      <StackNavigator />
+    </LoadingContextProvider>
+  );
 }

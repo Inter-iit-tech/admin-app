@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
 import COLORS from "./../assets/colors/colors";
-// import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
 const Input = ({
   label,
   iconName,
@@ -28,10 +28,6 @@ const Input = ({
           },
         ]}
       >
-        {/* <Icon
-          name={iconName}
-          style={{color: COLORS.darkBlue, fontSize: 22, marginRight: 10}}
-        /> */}
         <TextInput
           autoCorrect={false}
           onFocus={() => {
