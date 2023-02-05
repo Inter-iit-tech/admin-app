@@ -6,18 +6,21 @@ import {
   SafeAreaView,
   ScrollView,
   Keyboard,
+  Alert,
 } from "react-native";
 import Input from "../components/Input";
 import COLORS from "../assets/colors/colors";
 import { Button } from "@rneui/themed";
 import axios from "./../utils/axios/request";
+import useLoadingIndicator from "../hooks/useLoadingIndicator";
 
-export default function AddPickup({ navigation }) {
+export default function AddPickup({ navigation, onSuccess }) {
   const [inputs, setInputs] = useState({
     name: "",
     address: "",
     productId: "",
   });
+  const [loading, showLoading, hideLoading] = useLoadingIndicator();
 
   const [errors, setErrors] = React.useState({});
 
@@ -56,6 +59,7 @@ export default function AddPickup({ navigation }) {
   };
 
   const submitDetails = () => {
+    showLoading();
     // POST request
     console.log(inputs);
     const requestBody = {
@@ -70,10 +74,22 @@ export default function AddPickup({ navigation }) {
       .post("/api/v1/admin/add-pickup", requestBody)
       .then((res) => {
         console.log(res.data);
+        onSuccess();
+        Alert.alert(
+          "Pickup added",
+          "The pickup details were added successfully"
+        );
         navigation.goBack();
       })
       .catch((err) => {
+        Alert.alert(
+          "Error",
+          "Somethign went wrong while submitting the pickup details"
+        );
         console.log(err);
+      })
+      .finally(() => {
+        hideLoading();
       });
     // Go back to screen
   };

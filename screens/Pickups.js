@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { StyleSheet, View } from "react-native";
 import { SearchBar } from "@rneui/themed";
-import { FAB } from "@rneui/base";
+import { Button, FAB } from "@rneui/base";
 import { FlatList } from "react-native";
 import Pickup from "../components/Pickup";
 import axios from "./../utils/axios/request";
+import useLoadingIndicator from "../hooks/useLoadingIndicator";
 
 const Pickups = ({ navigation }) => {
   const openAddPickup = () => {
@@ -13,6 +14,7 @@ const Pickups = ({ navigation }) => {
 
   const [search, setSearch] = useState("");
   const [orders, setOrders] = useState([]);
+  const [loading, showLoading, hideLoading] = useLoadingIndicator();
 
   const updateSearch = (search) => {
     console.log(search);
@@ -20,6 +22,7 @@ const Pickups = ({ navigation }) => {
   };
 
   const getAdminDetails = () => {
+    showLoading();
     axios
       .get("/api/v1/admin/details-db/pickups")
       .then((response) => {
@@ -27,6 +30,9 @@ const Pickups = ({ navigation }) => {
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
+        hideLoading();
       });
   };
 
@@ -45,6 +51,9 @@ const Pickups = ({ navigation }) => {
           containerStyle={styles.searchContainer}
           inputContainerStyle={styles.inputContainer}
         />
+      </View>
+      <View style={{ paddingHorizontal: 20, backgroundColor: "white" }}>
+        <Button title="Refresh" type="outline" onPress={getAdminDetails} />
       </View>
       <FlatList
         style={styles.list}
@@ -78,12 +87,17 @@ const Pickups = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    flexDirection: "column",
+  },
   searchBar: {
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 0,
     backgroundColor: "white",
-    paddingBottom: 20,
+    paddingVertical: 20,
   },
   searchContainer: {
     width: 350,
@@ -96,25 +110,13 @@ const styles = StyleSheet.create({
     margin: 0,
     borderWidth: 0,
   },
-  orders: {
-    height: "100%",
-    padding: 20,
-    marginBottom: 10,
-  },
   list: {
-    marginTop: 10,
+    paddingTop: 10,
     paddingHorizontal: 10,
+    backgroundColor: "white",
   },
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    display: "flex",
-    flexDirection: "column",
-  },
-  pickups: {
-    justifyContent: "center",
-    alignItems: "center",
-    flex: 1,
+  footerPadView: {
+    height: 80,
   },
   floatingButtonContainer: {
     marginTop: "auto",
