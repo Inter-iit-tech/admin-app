@@ -18,8 +18,8 @@ import COLORS from "../assets/colors/colors";
 
 const AddPackageDetails = ({ navigation }) => {
   const [manualInputs, setManualInputs] = useState([
-    { label: "Product ID", key: "productID", value: "", error: "" },
-    { label: "Weight", key: "weight", value: "", error: "" },
+    { label: "Product ID", key: "skuID", value: "", error: "" },
+    { label: "Weight", key: "deadWeight", value: "", error: "" },
     { label: "Height", key: "height", value: "", error: "" },
   ]);
   const [autoInputs, setAutoInputs] = useState([
@@ -79,6 +79,26 @@ const AddPackageDetails = ({ navigation }) => {
     return isValid;
   };
 
+  const resetAllState = () => {
+    setManualInputs((prevState) => {
+      const newState = [...prevState];
+      newState.forEach((input) => {
+        input.value = "";
+        input.error = "";
+      });
+      return newState;
+    });
+    setAutoInputs((prevState) => {
+      const newState = [...prevState];
+      newState.forEach((input) => {
+        input.value = "";
+      });
+      return newState;
+    });
+    setImage(null);
+    setVolumeFetched(false);
+  };
+
   const uploadImage = async (imageData = image) => {
     showLoading();
     setVolumeFetched(false);
@@ -86,7 +106,7 @@ const AddPackageDetails = ({ navigation }) => {
     const fileContents = imageData.base64;
     const body = JSON.stringify({ file: fileContents });
     const headers = { "Content-Type": "application/json" };
-    const volumeApiUrl = "http://10.10.75.120:5000/volume/fromBase64";
+    const volumeApiUrl = "http://10.10.28.222:5000/volume/fromBase64";
 
     try {
       const { data } = await axios.post(volumeApiUrl, body, {
@@ -137,16 +157,28 @@ const AddPackageDetails = ({ navigation }) => {
     autoInputs.forEach((input) => {
       data[input.key] = input.value;
     });
-    data["volume"] = data["area"] * data["height"];
+    data["volume"] = (
+      parseFloat(data["area"]) * parseFloat(data["height"])
+    ).toString();
     console.log(data);
 
-    // TODO: POST request
-    // try {
-    //   const res = await axios();
-    //   console.log(res);
-    // } catch (err) {
-    //   console.log(err);
-    // }
+    // TODO: Update server baseURL
+    const backendURL = "http://192.168.2.78:3000/api/v1/input/productDetails";
+    try {
+      const res = await axios.post(backendURL, {
+        product: {
+          ...data,
+        },
+      });
+      console.log(res);
+      resetAllState();
+    } catch (err) {
+      Alert.alert(
+        "Error",
+        "There was an error while submitting the product details"
+      );
+      console.log(err);
+    }
     setIsSubmitting(false);
   };
 
