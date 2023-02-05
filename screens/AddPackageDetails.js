@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { Button } from "@rneui/themed";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -8,25 +7,30 @@ import {
   ScrollView,
   Keyboard,
   Platform,
+  ActivityIndicator,
+  Alert,
 } from "react-native";
+import { Icon, Overlay, Button } from "@rneui/base";
+import axios from "axios";
 import Input from "../components/Input";
-import COLORS from "../assets/colors/colors";
-import axios from "./../utils/axios/request";
 import ImagePicker from "../components/ImagePicker";
-import * as FileSystem from "expo-file-system";
+import COLORS from "../assets/colors/colors";
 
 const AddPackageDetails = ({ navigation }) => {
   const [manualInputs, setManualInputs] = useState([
-    { label: "Product ID", value: "", error: "" },
-    { label: "Weight", value: "", error: "" },
-    { label: "Height", value: "", error: "" },
+    { label: "Product ID", key: "productID", value: "", error: "" },
+    { label: "Weight", key: "weight", value: "", error: "" },
+    { label: "Height", key: "height", value: "", error: "" },
   ]);
   const [autoInputs, setAutoInputs] = useState([
-    { label: "Length", value: "" },
-    { label: "Breadth", value: "" },
-    { label: "Area", value: "" },
+    { label: "Length (cm)", key: "length", value: "" },
+    { label: "Breadth (cm)", key: "breadth", value: "" },
+    { label: "Area (cm sq.)", key: "area", value: "" },
   ]);
   const [image, setImage] = useState(null);
+  const [volumeLoading, setVolumeLoading] = useState(false);
+  const [volumeFetched, setVolumeFetched] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (text, index) => {
     setManualInputs((prevState) => {
@@ -44,12 +48,25 @@ const AddPackageDetails = ({ navigation }) => {
     });
   };
 
-  const validate = () => {
+  const handleImageSelect = (newImage) => {
+    setAutoInputs((prevState) => {
+      const newState = [...prevState];
+      newState.forEach((input) => {
+        input.value = "";
+      });
+      return newState;
+    });
+    setImage(newImage);
+    uploadImage(newImage);
+  };
+
+  const validateManualInputs = () => {
     Keyboard.dismiss();
 
     let isValid = true;
     manualInputs.forEach((input, index) => {
       if (input.value.length === 0) {
+        isValid = false;
         handleError(
           `Please input ${input.label[0].toLowerCase() + input.label.slice(1)}`,
           index
@@ -59,47 +76,86 @@ const AddPackageDetails = ({ navigation }) => {
       }
     });
 
-    if (isValid) {
-      submitDetails();
+    return isValid;
+  };
+
+  const uploadImage = async (imageData = image) => {
+    setVolumeLoading(true);
+    setVolumeFetched(false);
+
+    const fileContents = imageData.base64;
+    const body = JSON.stringify({ file: fileContents });
+    const headers = { "Content-Type": "application/json" };
+    const volumeApiUrl = "http://10.10.75.120:5000/volume/fromBase64";
+
+    try {
+      const { data } = await axios.post(volumeApiUrl, body, {
+        headers: headers,
+      });
+      setAutoInputs((prevState) => {
+        const newState = [...prevState];
+        newState.forEach((input) => {
+          input.value = data[input.key].toString();
+        });
+        return newState;
+      });
+      setVolumeFetched(true);
+    } catch (error) {
+      let displayMessage = "Failed to get volumetric data.";
+      if (error.response) {
+        displayMessage += ` (${error.response.data.message})`;
+      }
+      Alert.alert("Error", displayMessage);
     }
+    setVolumeLoading(false);
   };
 
   const submitDetails = async () => {
-    // let data = {};
-    // manualInputs.forEach((input) => {
-    //   const camelCaseLabel =
-    //     input.label[0].toLowerCase() + input.label.slice(1).split(" ").join("");
-    //   data[camelCaseLabel] = input.value;
-    // });
-    // autoInputs.forEach((input) => {
-    //   const camelCaseLabel =
-    //     input.label[0].toLowerCase() + input.label.slice(1).split(" ").join("");
-    //   data[camelCaseLabel] = input.value;
-    // });
-    // console.log(data);
-    const formData = new FormData();
-    const fileContents = await FileSystem.readAsStringAsync(image.uri);
-    console.log(fileContents);
-    formData.append("file", fileContents);
+    setIsSubmitting(true);
+
+    const isManualInputValid = validateManualInputs();
+    if (!isManualInputValid) {
+      Alert.alert(
+        "Incomplete details",
+        "Please ensure that all inputs are filled."
+      );
+      return;
+    }
+
+    if (!volumeFetched) {
+      Alert.alert(
+        "Incomplete Data",
+        "There was a problem with the volumetric data. Please refresh the details and try again."
+      );
+      return;
+    }
+
+    let data = {};
+    manualInputs.forEach((input) => {
+      data[input.key] = input.value;
+    });
+    autoInputs.forEach((input) => {
+      data[input.key] = input.value;
+    });
+    data["volume"] = data["area"] * data["height"];
+    console.log(data);
 
     // TODO: POST request
-    try {
-      console.log("sending request");
-      const res = await axios({
-        method: "post",
-        url: "http://192.168.207.145:5000/volume",
-        data: formData,
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      console.log(res.message);
-    } catch (err) {
-      console.log(err.message);
-    }
+    // try {
+    //   const res = await axios();
+    //   console.log(res);
+    // } catch (err) {
+    //   console.log(err);
+    // }
+    setIsSubmitting(false);
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scroller}>
+        <Overlay isVisible={volumeLoading} overlayStyle={styles.overlay}>
+          <ActivityIndicator color="white" />
+        </Overlay>
         <Text style={styles.subheading}>Enter new item details</Text>
         <View style={styles.content}>
           {manualInputs.map((input, index) => (
@@ -115,17 +171,63 @@ const AddPackageDetails = ({ navigation }) => {
             />
           ))}
         </View>
-        <ImagePicker onImageSelect={setImage} imageURI={image?.uri} />
-        <Button
-          buttonStyle={{
-            marginTop: 20,
-            padding: 10,
-            backgroundColor: "#5D5FEE",
-          }}
-          onPress={validate}
-        >
-          Submit
-        </Button>
+        {image && (
+          <>
+            <View style={styles.volumeHeader}>
+              <Text style={styles.subheading}>Volumetric details</Text>
+              <Button
+                onPress={() => uploadImage(image)}
+                title="Refresh details"
+                titleStyle={{ fontSize: 14, marginLeft: 5 }}
+                type="clear"
+                size="sm"
+                icon={
+                  <Icon
+                    name="refresh"
+                    type="material"
+                    color={COLORS.primaryBlue}
+                    size={20}
+                  />
+                }
+              />
+            </View>
+            <View style={styles.content}>
+              {autoInputs.map((input, index) => (
+                <Input
+                  label={input.label}
+                  value={input.value}
+                  disabled={true}
+                  onFocus={() => {
+                    Keyboard.dismiss();
+                    Alert.alert(
+                      "Non-editable data",
+                      "This field cannot be manually edited. Please use the 'refresh details' button to update the data."
+                    );
+                  }}
+                  key={index}
+                />
+              ))}
+            </View>
+          </>
+        )}
+        <ImagePicker
+          onImageSelect={handleImageSelect}
+          imageURI={image?.uri}
+          fallbackText={`Choose an image to get the item's volumetric details.`}
+        />
+        {image && (
+          <Button
+            disabled={volumeLoading || isSubmitting}
+            buttonStyle={{
+              marginTop: 20,
+              padding: 10,
+              backgroundColor: "#5D5FEE",
+            }}
+            onPress={submitDetails}
+          >
+            Submit
+          </Button>
+        )}
       </ScrollView>
     </SafeAreaView>
   );
@@ -138,17 +240,23 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     padding: 10,
+    paddingBottom: 20,
   },
   scroller: {
     paddingTop: Platform.OS === "ios" ? 20 : 0,
     paddingHorizontal: 10,
-    marginBottom: 20,
-  },
-  heading: {
-    color: COLORS.black,
-    fontSize: 40,
-    fontWeight: "bold",
   },
   subheading: { color: COLORS.grey, fontSize: 18, marginVertical: 10 },
-  content: { marginTop: 20 },
+  content: { marginTop: 10 },
+  volumeHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  overlay: {
+    backgroundColor: "transparent",
+    flex: 1,
+    width: "100%",
+    justifyContent: "center",
+  },
 });

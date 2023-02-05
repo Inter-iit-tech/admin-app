@@ -3,8 +3,13 @@ import { Button, Icon } from "@rneui/base";
 import { launchCameraAsync } from "expo-image-picker";
 import useCamera from "../hooks/useCamera";
 import useMedia from "../hooks/useMedia";
+import COLORS from "../assets/colors/colors";
 
-const ImagePicker = ({ onImageSelect, imageURI }) => {
+const ImagePicker = ({
+  onImageSelect,
+  imageURI,
+  fallbackText = "No image selected",
+}) => {
   const getCameraPermission = useCamera();
   const getMediaPermission = useMedia();
 
@@ -19,6 +24,8 @@ const ImagePicker = ({ onImageSelect, imageURI }) => {
     let result = await launchCameraAsync({
       allowsEditing: true,
       aspect: [1, 1],
+      base64: true,
+      quality: 0.8,
     });
 
     if (result.canceled) {
@@ -40,7 +47,7 @@ const ImagePicker = ({ onImageSelect, imageURI }) => {
         {imageURI ? (
           <Image style={styles.image} source={{ uri: imageURI }} />
         ) : (
-          <Text style={styles.displayText}>No Image Selected</Text>
+          <Text style={styles.displayText}>{fallbackText}</Text>
         )}
       </View>
       <Button
@@ -50,11 +57,12 @@ const ImagePicker = ({ onImageSelect, imageURI }) => {
           <Icon
             name="camera-alt"
             type="material"
-            color="white"
+            color={COLORS.primaryBlue}
             style={{ marginLeft: 5 }}
           />
         }
         iconRight={true}
+        type="outline"
       />
     </View>
   );
@@ -84,6 +92,8 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
   },
   displayText: {
+    textAlign: "center",
     color: "white",
+    padding: 5,
   },
 });
