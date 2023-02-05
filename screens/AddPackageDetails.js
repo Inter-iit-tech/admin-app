@@ -185,7 +185,24 @@ const AddPackageDetails = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scroller}>
-        <Text style={styles.subheading}>Enter new item details</Text>
+        <View style={styles.headingContainer}>
+          <Text style={styles.subheading}>Enter new item details</Text>
+          <Button
+            onPress={resetAllState}
+            title="Reset"
+            titleStyle={{ fontSize: 14, marginLeft: 5 }}
+            type="clear"
+            size="sm"
+            icon={
+              <Icon
+                name="refresh"
+                type="material"
+                color={COLORS.primaryBlue}
+                size={20}
+              />
+            }
+          />
+        </View>
         <View style={styles.content}>
           {manualInputs.map((input, index) => (
             <Input
@@ -202,7 +219,7 @@ const AddPackageDetails = ({ navigation }) => {
         </View>
         {image && (
           <>
-            <View style={styles.volumeHeader}>
+            <View style={styles.headingContainer}>
               <Text style={styles.subheading}>Volumetric details</Text>
               <Button
                 onPress={() => uploadImage(image)}
@@ -277,7 +294,7 @@ const styles = StyleSheet.create({
   },
   subheading: { color: COLORS.grey, fontSize: 18, marginVertical: 10 },
   content: { marginTop: 10 },
-  volumeHeader: {
+  headingContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
