@@ -1,18 +1,22 @@
 import { useEffect, useState } from "react";
-import { StyleSheet, View, ScrollView } from "react-native";
+import { StyleSheet, View, ScrollView, FlatList } from "react-native";
 import RiderCard from "../components/RiderCard";
 import axios from "./../utils/axios/request";
 import { SearchBar } from "@rneui/themed";
+import useLoadingIndicator from "../hooks/useLoadingIndicator";
+import { Button } from "@rneui/base";
 
 export default function Riders() {
   const [riders, setRiders] = useState([]);
   const [search, setSearch] = useState("");
+  const [loading, showLoading, hideLoading] = useLoadingIndicator();
 
   const updateSearch = (search) => {
     console.log(search);
     setSearch(search);
   };
   const getAdminDetails = () => {
+    showLoading();
     axios
       .get("/api/v1/admin/details-db/riders")
       .then((response) => {
@@ -20,6 +24,9 @@ export default function Riders() {
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
+        hideLoading();
       });
   };
 
@@ -39,11 +46,17 @@ export default function Riders() {
           inputContainerStyle={styles.inputContainer}
         />
       </View>
-      <ScrollView style={styles.orders}>
-        {riders.map((rider, index) => (
-          <RiderCard rider={rider} key={index} />
-        ))}
-      </ScrollView>
+      <View style={{ paddingHorizontal: 20, backgroundColor: "white" }}>
+        <Button title="Refresh" type="outline" onPress={getAdminDetails} />
+      </View>
+      <FlatList
+        style={styles.list}
+        data={riders}
+        renderItem={({ index, item }) => {
+          return <RiderCard rider={item} key={index} />;
+        }}
+        keyExtractor={(item) => item._id}
+      />
     </View>
   );
 }
@@ -70,10 +83,10 @@ const styles = StyleSheet.create({
     margin: 0,
     borderWidth: 0,
   },
-  orders: {
-    height: "100%",
+  list: {
+    paddingTop: 10,
     paddingHorizontal: 10,
-    marginVertical: 20,
+    backgroundColor: "white",
   },
   address: {
     display: "flex",

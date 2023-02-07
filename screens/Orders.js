@@ -4,9 +4,12 @@ import { SearchBar } from "@rneui/themed";
 import { FlatList } from "react-native";
 import Order from "../components/Order";
 import axios from "./../utils/axios/request";
+import useLoadingIndicator from "../hooks/useLoadingIndicator";
+import { Button } from "@rneui/base";
 
 export default function Orders() {
   const [search, setSearch] = useState("");
+  const [loading, showLoading, hideLoading] = useLoadingIndicator();
 
   const updateSearch = (search) => {
     console.log(search);
@@ -15,6 +18,7 @@ export default function Orders() {
   const [orders, setOrders] = useState([]);
 
   const getAdminDetails = () => {
+    showLoading();
     axios
       .get("/api/v1/admin/details-db/orders")
       .then((response) => {
@@ -22,6 +26,9 @@ export default function Orders() {
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
+        hideLoading();
       });
   };
 
@@ -41,6 +48,9 @@ export default function Orders() {
           inputContainerStyle={styles.inputContainer}
         />
       </View>
+      <View style={{ paddingHorizontal: 20, backgroundColor: "white" }}>
+        <Button title="Refresh" type="outline" onPress={getAdminDetails} />
+      </View>
       <FlatList
         style={styles.list}
         data={orders}
@@ -55,8 +65,6 @@ export default function Orders() {
           );
         }}
         keyExtractor={(order) => order.AWB}
-        ListFooterComponent={View}
-        ListFooterComponentStyle={styles.footerPadView}
       />
     </View>
   );
@@ -91,7 +99,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   list: {
-    marginTop: 10,
+    paddingTop: 10,
     paddingHorizontal: 10,
+    backgroundColor: "white",
   },
 });
