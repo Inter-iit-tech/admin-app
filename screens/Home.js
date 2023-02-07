@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import StatsCard from "../components/StatsCard";
 import { FAB } from "@rneui/themed";
@@ -7,6 +8,7 @@ import { useState } from "react";
 const Home = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [fetched, setFetched] = useState(false);
+  const [displayComponents, setDisplayComponents] = useState({});
 
   const callStartDayFunction = () => {
     setLoading(true);
@@ -23,9 +25,25 @@ const Home = ({ navigation }) => {
       });
   };
 
+  useEffect(() => {
+    setLoading(true);
+    axios
+      .get("/api/v1/admin/details-db/home")
+      .then((res) => {
+        console.log(res.data);
+        setLoading(false);
+        setDisplayComponents(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
+    setLoading(false);
+  }, []);
+
   return (
     <View style={styles.container}>
-      <StatsCard />
+      <StatsCard values={displayComponents} />
       {!fetched ? (
         <FAB
           placement="center"

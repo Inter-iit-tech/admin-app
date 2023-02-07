@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Card, Icon, ListItem, Text } from "@rneui/base";
 import { StyleSheet } from "react-native";
 
-const StatsCard = () => {
+const StatsCard = ({ values }) => {
   const [ordersExpanded, setOrdersExpanded] = useState(false);
   const [ridersExpanded, setRidersExpanded] = useState(false);
 
@@ -11,16 +11,16 @@ const StatsCard = () => {
       statTitle: "Orders",
       properties: [
         {
-          name: "Pending",
-          value: 30,
+          name: "Deliveries",
+          value: values?.ordersData?.deliveries,
         },
         {
-          name: "Completed",
-          value: 70,
+          name: "Pickups",
+          value: values?.ordersData?.pickups,
         },
         {
           name: "Total",
-          value: 100,
+          value: values?.ordersData?.deliveries + values?.ordersData?.pickups,
         },
       ],
       icon: (
@@ -39,11 +39,11 @@ const StatsCard = () => {
       properties: [
         {
           name: "Active",
-          value: 12,
+          value: values?.riderData?.count,
         },
         {
           name: "Total",
-          value: 17,
+          value: values?.riderData?.count,
         },
       ],
       icon: (

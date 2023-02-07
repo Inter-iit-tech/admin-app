@@ -256,7 +256,7 @@ const AddPackageDetails = ({ navigation }) => {
               padding: 10,
               backgroundColor: "#5D5FEE",
             }}
-            onPress={submitDetails}
+            // onPress={submitDetails}
           >
             Submit
           </Button>

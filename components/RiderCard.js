@@ -37,19 +37,16 @@ const RiderCard = ({ rider }) => {
             <ListItem.Content>
               <View style={styles.address}>
                 <Text style={styles.type}>Total Bag Volume:</Text>
-                <Text style={styles.text}>{rider.totalBagVolume} Litres</Text>
-              </View>
-
-              <View style={styles.address}>
-                <Text style={styles.type}>Current Available Bag Volume:</Text>
                 <Text style={styles.text}>
-                  {rider.currentAvailableBagVolume} Litres
+                  {rider.totalBagVolume / 1000} Litres
                 </Text>
               </View>
 
               <View style={styles.address}>
-                <Text style={styles.type}>Next Delivery Location:</Text>
-                <Text style={styles.text}>{rider.nextDeliveryLocation}</Text>
+                <Text style={styles.type}>Rider ID:</Text>
+                <Text style={styles.text}>
+                  {String(rider._id)?.slice(-6).toUpperCase()}
+                </Text>
               </View>
             </ListItem.Content>
           </ListItem>

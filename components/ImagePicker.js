@@ -23,9 +23,9 @@ const ImagePicker = ({
 
     let result = await launchCameraAsync({
       allowsEditing: true,
-      aspect: [1, 1],
+      aspect: [9, 16],
       base64: true,
-      quality: 0.8,
+      quality: 1,
     });
 
     if (result.canceled) {
