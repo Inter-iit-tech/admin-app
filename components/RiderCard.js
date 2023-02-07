@@ -6,52 +6,56 @@ const RiderCard = ({ rider }) => {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <ListItem.Accordion
-      bottomDivider
-      topDivider
-      content={
-        <>
-          <Avatar
-            rounded
-            title={rider?.name?.[0] || "HW"}
-            titleStyle={{ color: "white", fontWeight: "600" }}
-            containerStyle={{ backgroundColor: "#FF7F50" }}
-          />
+    <View style={[styles.container]}>
+      <ListItem.Accordion
+        bottomDivider
+        topDivider
+        content={
+          <>
+            <Avatar
+              rounded
+              title={rider?.name?.[0] || "R"}
+              titleStyle={{ color: "white", fontWeight: "600" }}
+              containerStyle={{ backgroundColor: "#FF7F50" }}
+            />
 
-          <ListItem.Content style={styles.title}>
-            <Text style={{ fontWeight: "bold" }}>{rider.name}</Text>
-            <Text>{rider.phoneNumber}</Text>
-          </ListItem.Content>
-        </>
-      }
-      isExpanded={expanded}
-      onPress={() => {
-        setExpanded(!expanded);
-      }}
-    >
-      {
-        <ListItem topDivider bottomDivider style={styles.content}>
-          <ListItem.Content>
-            <View style={styles.address}>
-              <Text style={styles.type}>Total Bag Volume:</Text>
-              <Text style={styles.text}>{rider.totalBagVolume} Litres</Text>
-            </View>
-
-            <View style={styles.address}>
-              <Text style={styles.type}>Current Available Bag Volume:</Text>
-              <Text style={styles.text}>
-                {rider.currentAvailableBagVolume} Litres
+            <ListItem.Content style={styles.title}>
+              <Text style={{ fontWeight: "bold" }}>
+                {rider.name || "Rider"}
               </Text>
-            </View>
+              <Text>{rider.phoneNumber}</Text>
+            </ListItem.Content>
+          </>
+        }
+        isExpanded={expanded}
+        onPress={() => {
+          setExpanded(!expanded);
+        }}
+      >
+        {
+          <ListItem topDivider bottomDivider style={styles.content}>
+            <ListItem.Content>
+              <View style={styles.address}>
+                <Text style={styles.type}>Total Bag Volume:</Text>
+                <Text style={styles.text}>{rider.totalBagVolume} Litres</Text>
+              </View>
 
-            <View style={styles.address}>
-              <Text style={styles.type}>Next Delivery Location:</Text>
-              <Text style={styles.text}>{rider.nextDeliveryLocation}</Text>
-            </View>
-          </ListItem.Content>
-        </ListItem>
-      }
-    </ListItem.Accordion>
+              <View style={styles.address}>
+                <Text style={styles.type}>Current Available Bag Volume:</Text>
+                <Text style={styles.text}>
+                  {rider.currentAvailableBagVolume} Litres
+                </Text>
+              </View>
+
+              <View style={styles.address}>
+                <Text style={styles.type}>Next Delivery Location:</Text>
+                <Text style={styles.text}>{rider.nextDeliveryLocation}</Text>
+              </View>
+            </ListItem.Content>
+          </ListItem>
+        }
+      </ListItem.Accordion>
+    </View>
   );
 };
 
@@ -66,6 +70,13 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     flexDirection: "row",
     minHeight: 130,
+  },
+  container: {
+    borderWidth: 2,
+    borderColor: "#AFAFAF",
+    borderRadius: 15,
+    marginBottom: 5,
+    overflow: "hidden",
   },
   subContent: {
     marginVertical: 5,

@@ -55,7 +55,7 @@ const Pickups = ({ navigation }) => {
               name={item.names}
               address={item.address}
               awb={item.AWB}
-              productID={item._id}
+              productID={item.product}
               refetchOrders={getAdminDetails}
             />
           );

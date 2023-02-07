@@ -85,11 +85,12 @@ export default Order;
 
 const styles = StyleSheet.create({
   container: {
-    borderWidth: 0,
+    borderWidth: 2,
     borderColor: "#AFAFAF",
-    borderRadius: 5,
-    marginBottom: 10,
-    elevation: 2,
+    borderRadius: 15,
+    marginBottom: 5,
+    // elevation: 2,s
+    overflow: "hidden",
   },
   locationContainer: {
     paddingTop: 4,
