@@ -22,6 +22,7 @@ import {
 
 const AddPackageDetails = ({ navigation }) => {
   const [manualInputs, setManualInputs] = useState([
+    { label: "AWB", key: "AWB", value: "", error: "" },
     { label: "Product ID", key: "skuID", value: "", error: "" },
     { label: "Weight", key: "deadWeight", value: "", error: "" },
     { label: "Height", key: "height", value: "", error: "" },
@@ -174,7 +175,7 @@ const AddPackageDetails = ({ navigation }) => {
         },
       });
       console.log(res);
-      Alert.alert("Success", "Product Details uploaded successfully");
+      Alert.alert("Item Added", res.data.message);
       resetAllState();
     } catch (err) {
       Alert.alert(
@@ -273,7 +274,7 @@ const AddPackageDetails = ({ navigation }) => {
               padding: 10,
               backgroundColor: "#5D5FEE",
             }}
-            // onPress={submitDetails}
+            onPress={submitDetails}
           >
             Submit
           </Button>
