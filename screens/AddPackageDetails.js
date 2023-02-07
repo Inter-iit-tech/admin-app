@@ -15,6 +15,10 @@ import Input from "../components/Input";
 import ImagePicker from "../components/ImagePicker";
 import useLoadingIndicator from "../hooks/useLoadingIndicator";
 import COLORS from "../assets/colors/colors";
+import {
+  MAIN_SERVER_URL,
+  VOLUME_ESTIMATION_SERVICE_URL,
+} from "../utils/constants";
 
 const AddPackageDetails = ({ navigation }) => {
   const [manualInputs, setManualInputs] = useState([
@@ -106,7 +110,7 @@ const AddPackageDetails = ({ navigation }) => {
     const fileContents = imageData.base64;
     const body = JSON.stringify({ file: fileContents });
     const headers = { "Content-Type": "application/json" };
-    const volumeApiUrl = "http://10.10.28.222:5000/volume/fromBase64";
+    const volumeApiUrl = `${VOLUME_ESTIMATION_SERVICE_URL}/volume/fromBase64`;
 
     try {
       const { data } = await axios.post(volumeApiUrl, body, {
@@ -162,8 +166,7 @@ const AddPackageDetails = ({ navigation }) => {
     ).toString();
     console.log(data);
 
-    // TODO: Update server baseURL
-    const backendURL = "http://192.168.2.78:3000/api/v1/input/productDetails";
+    const backendURL = `${MAIN_SERVER_URL}/api/v1/input/productDetails`;
     try {
       const res = await axios.post(backendURL, {
         product: {
@@ -171,6 +174,7 @@ const AddPackageDetails = ({ navigation }) => {
         },
       });
       console.log(res);
+      Alert.alert("Success", "Product Details uploaded successfully");
       resetAllState();
     } catch (err) {
       Alert.alert(

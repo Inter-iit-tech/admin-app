@@ -1,3 +1,4 @@
 import axios from "axios";
+import { MAIN_SERVER_URL } from "../constants";
 
-export default axios.create({ baseURL: "http://10.10.28.209:3000" });
+export default axios.create({ baseURL: MAIN_SERVER_URL });
