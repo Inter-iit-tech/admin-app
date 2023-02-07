@@ -2,6 +2,7 @@ import {
   PermissionStatus,
   useMediaLibraryPermissions,
 } from "expo-image-picker";
+import { Alert } from "react-native";
 
 const useMedia = () => {
   const [mediaPermissionStatus, requestMediaPermission] =

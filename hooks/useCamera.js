@@ -1,4 +1,5 @@
 import { useCameraPermissions, PermissionStatus } from "expo-image-picker";
+import { Alert } from "react-native";
 
 const useCamera = () => {
   const [cameraPermissionStatus, requestCameraPermission] =
