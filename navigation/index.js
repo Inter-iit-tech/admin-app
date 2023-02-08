@@ -10,6 +10,7 @@ import {
   Pickups,
   AddPickup,
   AddPackageDetails,
+  OrdersMap,
 } from "./../screens";
 
 const TabNavigator = createBottomTabNavigator();
@@ -35,6 +36,11 @@ export default function Navigator() {
   const itemBarOptions = {
     tabBarIcon: () => <Icon name="playlist-add" type="material" size={30} />,
     headerTitle: "Add Item",
+  };
+
+  const mapBarOptions = {
+    tabBarIcon: () => <Icon name="map" type="material" size={30} />,
+    headerTitle: "Map",
   };
 
   // Stacks
@@ -84,6 +90,11 @@ export default function Navigator() {
           name="Items"
           component={AddPackageDetails}
           options={itemBarOptions}
+        />
+        <TabNavigator.Screen
+          name="Maps"
+          component={OrdersMap}
+          options={mapBarOptions}
         />
       </TabNavigator.Navigator>
     </NavigationContainer>
