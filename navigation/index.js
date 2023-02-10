@@ -10,6 +10,7 @@ import {
   Pickups,
   AddPickup,
   AddPackageDetails,
+  OrdersMap,
 } from "./../screens";
 import COLORS from "./../assets/colors/colors";
 
@@ -46,6 +47,11 @@ export default function Navigator() {
       <Icon name="playlist-add" type="material" color={color} size={size} />
     ),
     headerTitle: "Add Item",
+  };
+
+  const mapBarOptions = {
+    tabBarIcon: () => <Icon name="map" type="material" size={30} />,
+    headerTitle: "Map",
   };
 
   // Stacks
@@ -102,6 +108,11 @@ export default function Navigator() {
           name="Items"
           component={AddPackageDetails}
           options={itemBarOptions}
+        />
+        <TabNavigator.Screen
+          name="Maps"
+          component={OrdersMap}
+          options={mapBarOptions}
         />
       </TabNavigator.Navigator>
     </NavigationContainer>

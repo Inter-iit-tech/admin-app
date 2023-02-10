@@ -5,6 +5,7 @@ import Pickups from "./Pickups";
 import AddPickup from "./AddPickup";
 import DocPicker from "./AddInput";
 import AddPackageDetails from "./AddPackageDetails";
+import OrdersMap from "./OrdersMap";
 export {
   Home,
   Orders,
@@ -13,4 +14,5 @@ export {
   AddPickup,
   AddPackageDetails,
   DocPicker,
+  OrdersMap,
 };

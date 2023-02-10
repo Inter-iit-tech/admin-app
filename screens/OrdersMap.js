@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
 import axios from "./../utils/axios/request";
+// import axios from "axios";
 import MapView, {
   PROVIDER_GOOGLE,
   Marker,
@@ -9,13 +10,26 @@ import MapView, {
 } from "react-native-maps";
 
 export default function OrdersMap() {
-  const [orders, setOrders] = useState([]);
+  const [riders, setRiders] = useState([]);
 
-  const getAdminDetails = () => {
+  const colors = [
+    "red",
+    "blue",
+    "green",
+    "yellow",
+    "violet",
+    "orange",
+    "pink",
+    "black",
+  ];
+  const getAdminRiderDetails = () => {
+    console.log("CALLED");
     axios
-      .get("/api/v1/admin/details-db/orders")
+      .get("api/v1/admin/rider-admin")
       .then((response) => {
-        if (response?.data?.data) setOrders(response.data.data);
+        console.log({ s: response.data.status, d: response.data.data });
+        const d = response.data.data;
+        setRiders(d);
       })
       .catch((err) => {
         console.log(err);
@@ -23,8 +37,37 @@ export default function OrdersMap() {
   };
 
   useEffect(() => {
-    getAdminDetails();
+    getAdminRiderDetails();
   }, []);
+
+  const Markers = ({ orders, color }) => {
+    return orders.map((order, i) => {
+      return (
+        <Marker
+          key={order.orderId.AWB}
+          identifier={String(order.orderId.AWB)}
+          coordinate={{
+            latitude: order.orderId.location.lat,
+            longitude: order.orderId.location.lng,
+          }}
+          pinColor={color}
+        >
+          <Callout tooltip>
+            <View>
+              <View style={styles.bubble}>
+                <Text style={styles.name}>
+                  {i} {order.names}
+                </Text>
+                <Text>{order.orderId.address}</Text>
+              </View>
+              <View style={styles.arrowBorder} />
+              <View style={styles.arrow} />
+            </View>
+          </Callout>
+        </Marker>
+      );
+    });
+  };
 
   return (
     <>
@@ -35,39 +78,24 @@ export default function OrdersMap() {
         customMapStyle={mapStandardStyle}
         initialRegion={BangaloreCoordinates}
       >
-        {orders.map((order, i) => {
-          return (
-            <Marker
-              key={order.AWB}
-              identifier={String(order.AWB)}
-              coordinate={{
-                latitude: order.location.lat,
-                longitude: order.location.lng,
-              }}
-            >
-              <Callout tooltip>
-                <View>
-                  <View style={styles.bubble}>
-                    <Text style={styles.name}>
-                      {i} {order.names}
-                    </Text>
-                    <Text>{order.address}</Text>
-                  </View>
-                  <View style={styles.arrowBorder} />
-                  <View style={styles.arrow} />
-                </View>
-              </Callout>
-            </Marker>
-          );
-        })}
+        {riders.length > 0 &&
+          riders.map((rider, ind) => {
+            return (
+              <Markers
+                key={ind}
+                orders={rider?.tours[0]}
+                color={colors[ind + 1]}
+              />
+            );
+          })}
       </MapView>
     </>
   );
 }
 
-const BangaloreCoordinates = {
-  latitude: 20.14843197337348,
-  longitude: 85.67124271883452,
+export const BangaloreCoordinates = {
+  latitude: 12.9063958,
+  longitude: 77.5886106,
   latitudeDelta: 0.015,
   longitudeDelta: 0.0121,
 };
