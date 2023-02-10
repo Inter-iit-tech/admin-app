@@ -11,55 +11,73 @@ import {
   AddPickup,
   AddPackageDetails,
 } from "./../screens";
+import COLORS from "./../assets/colors/colors";
 
 const TabNavigator = createBottomTabNavigator();
 
 export default function Navigator() {
   const homeBarOptions = {
-    tabBarIcon: () => <Icon name="home" />,
+    tabBarIcon: ({ color, size }) => (
+      <Icon name="home" color={color} size={size} />
+    ),
   };
 
   const orderBarOptions = {
-    tabBarIcon: () => <Icon name="shopping-cart" type="material" />,
+    tabBarIcon: ({ color, size }) => (
+      <Icon name="shopping-cart" type="material" color={color} size={size} />
+    ),
   };
 
   const riderrBarOptions = {
-    tabBarIcon: () => <Icon name="people" type="material" />,
+    tabBarIcon: ({ color, size }) => (
+      <Icon name="people" type="material" color={color} size={size} />
+    ),
   };
 
   const pickupBarOptions = {
-    tabBarIcon: () => <Icon name="shopping-bag" type="material" />,
+    tabBarIcon: ({ color, size }) => (
+      <Icon name="shopping-bag" type="material" color={color} size={size} />
+    ),
     headerShown: false,
   };
 
   const itemBarOptions = {
-    tabBarIcon: () => <Icon name="playlist-add" type="material" size={30} />,
+    tabBarIcon: ({ color, size }) => (
+      <Icon name="playlist-add" type="material" color={color} size={size} />
+    ),
     headerTitle: "Add Item",
   };
 
   // Stacks
 
-  const pickupStack = createNativeStackNavigator();
+  const PickupStack = createNativeStackNavigator();
   const PickupStackNavigator = () => {
     return (
-      <pickupStack.Navigator>
-        <pickupStack.Screen
+      <PickupStack.Navigator
+        screenOptions={{
+          contentStyle: { backgroundColor: "white" },
+        }}
+      >
+        <PickupStack.Screen
           name="pickups"
           component={Pickups}
           options={{ title: "Pickups" }}
         />
-        <pickupStack.Screen
+        <PickupStack.Screen
           name="add-pickup"
           component={AddPickup}
           options={{ headerTitle: "Add pickup" }}
         />
-      </pickupStack.Navigator>
+      </PickupStack.Navigator>
     );
   };
 
   return (
     <NavigationContainer>
-      <TabNavigator.Navigator screenOptions={styles}>
+      <TabNavigator.Navigator
+        sceneContainerStyle={{ backgroundColor: "white" }}
+        screenOptions={styles}
+      >
         <TabNavigator.Screen
           name="Home"
           component={Home}
@@ -93,4 +111,5 @@ export default function Navigator() {
 const styles = StyleSheet.create({
   tabBarActiveTintColor: "green",
   headerStyle: { height: 100 },
+  tabBarActiveTintColor: COLORS.blue,
 });

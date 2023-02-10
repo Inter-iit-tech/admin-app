@@ -1,2 +1,3 @@
-export const MAIN_SERVER_URL = "http://172.20.10.2:3000";
-export const VOLUME_ESTIMATION_SERVICE_URL = "http://192.168.0.129:5000";
+export const MAIN_SERVER_URL = "http://192.168.137.1:3000";
+export const VOLUME_ESTIMATION_SERVICE_URL =
+  "https://volume-estimation-rbb2mcozsa-em.a.run.app";
