@@ -44,7 +44,7 @@ export default function OrdersMap() {
     return orders.map((order, i) => {
       return (
         <Marker
-          key={order.orderId.AWB}
+          key={`${order.orderId.AWB}:${i}`}
           identifier={String(order.orderId.AWB)}
           coordinate={{
             latitude: order.orderId.location.lat,
@@ -83,7 +83,7 @@ export default function OrdersMap() {
             return (
               <Markers
                 key={ind}
-                orders={rider?.tours[0]}
+                orders={rider?.tours[0] || []}
                 color={colors[ind + 1]}
               />
             );
