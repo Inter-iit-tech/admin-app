@@ -1,3 +1,3 @@
-export const MAIN_SERVER_URL = "https://backend-rbb2mcozsa-em.a.run.app";
+export const MAIN_SERVER_URL = "http://10.10.28.114:3000";
 export const VOLUME_ESTIMATION_SERVICE_URL =
-  "https://volume-estimation-rbb2mcozsa-em.a.run.app";
+  "https://volumetric-rbb2mcozsa-em.a.run.app";

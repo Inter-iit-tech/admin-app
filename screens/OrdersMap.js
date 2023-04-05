@@ -29,6 +29,7 @@ export default function OrdersMap() {
       .then((response) => {
         console.log({ s: response.data.status, d: response.data.data });
         const d = response.data.data;
+        d.forEach(e=>console.log((e.tours.length>0)?e.tours[0].length:'true'));
         setRiders(d);
       })
       .catch((err) => {
@@ -41,6 +42,7 @@ export default function OrdersMap() {
   }, []);
 
   const Markers = ({ orders, color }) => {
+    console.log({color});
     return orders.map((order, i) => {
       return (
         <Marker
@@ -78,13 +80,13 @@ export default function OrdersMap() {
         customMapStyle={mapStandardStyle}
         initialRegion={BangaloreCoordinates}
       >
-        {riders.length > 0 &&
-          riders.map((rider, ind) => {
+        {/* {riders.length > 0 && */}
+          {riders.map((rider, ind) => {
             return (
               <Markers
                 key={ind}
                 orders={rider?.tours[0] || []}
-                color={colors[ind + 1]}
+                color={colors[(ind + 1)%colors.length]}
               />
             );
           })}

@@ -120,6 +120,7 @@ const AddPackageDetails = ({ navigation }) => {
       setAutoInputs((prevState) => {
         const newState = [...prevState];
         newState.forEach((input) => {
+          console.log(data);
           input.value = data[input.key].toString();
         });
         return newState;
